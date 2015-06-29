@@ -37,6 +37,7 @@ angular
                 controller  : demoController,
                 data        : {
                     bsNav : {
+			disabled : 'true',
                         textDisplay : 'Home',
                         group       : 1
                     }
@@ -84,6 +85,7 @@ angular
                     controller  : demoController,
                     data        : {
                         bsNav : {
+			    disabled : 'true',
                             type        : 'dropdownLink',
                             textDisplay : 'Section2'
                         }

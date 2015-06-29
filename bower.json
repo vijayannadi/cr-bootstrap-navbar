@@ -32,5 +32,8 @@
     "underscore": "~1.6.0",
     "angular-underscore": "*",
     "jquery": "~2.1.1"
+  },
+  "resolutions": {
+    "angular": ">= 1.0.8"
   }
 }

@@ -1,13 +1,18 @@
 'use strict';
 
 angular.module('cr.bootstrap.navbar', ['ui.router', 'angular-underscore'])
+  .config(['$compileProvider', function ($compileProvider) {
+    $compileProvider.debugInfoEnabled(false);
+  }])
   .directive('crEatClick', [function () {
     return {
         restrict : 'A',
         link     : function postLink(scope, element, attrs) {
-            element.click(function(event){
-                event.preventDefault();
-            });
+            if (attrs["crEatClick"]) {
+	        element.click(function(event){
+                    event.preventDefault();
+                });
+	    }
         }
     };
   }])
@@ -38,7 +43,10 @@ angular.module('cr.bootstrap.navbar', ['ui.router', 'angular-underscore'])
                                 '    <a ' + 
                                 '      ng-if   ="!link.isDropdown"' + 
                                 '      ui-sref ="{{ link._state.name }}"' + 
-                                '    >' + 
+				'      ng-attr-disabled="{{ link.disabled }}"' +
+				'      ng-class="{\'btn\': true, \'disabled\' : link.disabled == \'true\' }"' +
+				'      ng-attr-cr-eat-click="{{ link.disabled }}"' +
+				'    >' + 
                                 '        {{ link.textDisplay }}' +
                                 '     </a>' +
                                     // Multi links (dropdowns)
@@ -62,7 +70,11 @@ angular.module('cr.bootstrap.navbar', ['ui.router', 'angular-underscore'])
                                 '            ui-sref-active ="active"' + 
                                 '            ng-class       ="{\'rm-navbar-divider-before\': childLink.dividerBefore}"' +
                                 '       >' + 
-                                '         <a ui-sref="{{ childLink._state.name }}">' + 
+                                '         <a ' +
+				'           ui-sref="{{ childLink._state.name }}" ' +
+				'           ng-attr-cr-eat-click="{{ childLink.disabled }}"' +
+				'           ng-class="{\'btn\': true, \'disabled\' : childLink.disabled == \'true\' }"' +
+				'          >' + 
                                 '           {{ childLink.textDisplay }}' + 
                                 '         </a>' + 
                                 '       </li>' + 
@@ -178,4 +190,23 @@ angular.module('cr.bootstrap.navbar', ['ui.router', 'angular-underscore'])
 
       }
     };
-  }]);
+  }])/*
+  .directive('aDisabled', function ($compile) {
+return {
+restrict: 'A',
+priority: -99999,
+link: function (scope, element, attrs) {
+scope.$watch(attrs.aDisabled, function (val, oldval) {
+if ( !! val) {
+element.unbind('click');
+} else if (oldval) {
+element.bind('click', function () {
+scope.$apply(attrs.ngClick);
+});
+}
+});
+  }
+};
+});
+  */
+  ;
